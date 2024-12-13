@@ -1,0 +1,103 @@
+﻿<Window x:Class="FamilyTree.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FamilyTree"
+        xmlns:vm="clr-namespace:FamilyTree.ViewModel"
+        mc:Ignorable="d"
+        Title="Генеологическое древо" Height="450" Width="800">
+
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <GroupBox Header="Создать дерево">
+            <StackPanel>
+                <WrapPanel>
+                    <TextBlock Text="Название" Margin="5"/>
+                    <TextBox Text="{Binding TitleTree}" Margin="5" Width="150"/>
+                </WrapPanel>
+                <Button Content="Создать" Command="{Binding AddTree}" Width="100" HorizontalAlignment="Left" Margin="5"/>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Header="Добавление человека" Grid.Column="0" Grid.Row="1">
+            <StackPanel>
+                <WrapPanel>
+                    <TextBlock Text="ФИО" Margin="5"/>
+                    <TextBox Width="200" Margin="5" Text="{Binding FIO}"/>
+                </WrapPanel>
+                <WrapPanel>
+                    <TextBlock Text="Дата рождения" Margin="5"/>
+                    <DatePicker Width="100" Margin="5" SelectedDate="{Binding BirthDay}"/>
+                </WrapPanel>
+                <WrapPanel>
+                    <RadioButton Content="Мужской" Margin="5" IsChecked="{Binding GenderMale}"/>
+                    <RadioButton Content="Женский" Margin="5" IsChecked="{Binding GenderFemale}"/>
+                </WrapPanel>
+                <WrapPanel>
+                    <TextBlock Text="Древо" Margin="5"/>
+                    <ComboBox Width="100" Margin="5" ItemsSource="{Binding FamilyTrees}" DisplayMemberPath="Title" SelectedItem="{Binding SelectedTree}"/>
+                </WrapPanel>
+                <Button Content="Добавить" Command="{Binding AddHuman}" Width="100" HorizontalAlignment="Left" Margin="5"/>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Header="Установить связь" Grid.Column="1" Grid.Row="1">
+            <StackPanel>
+                <WrapPanel>
+                    <TextBlock Text="Человек" Margin="5"/>
+                    <ComboBox Width="200" ItemsSource="{Binding Humans}" SelectedItem="{Binding Relation.SelectedHuman}" DisplayMemberPath="FIO" Margin="5"/>
+                </WrapPanel>
+                <WrapPanel>
+                    <TextBlock Text="Родство" Margin="5"/>
+                    <ComboBox Width="100" ItemsSource="{Binding Relations}" SelectedItem="{Binding Relation.Relations}" Margin="5"/>
+                </WrapPanel>
+                <WrapPanel>
+                    <TextBlock Text="Для человека" Margin="5"/>
+                    <ComboBox Width="200" ItemsSource="{Binding Humans}" SelectedItem="{Binding Relation.ForHuman}" DisplayMemberPath="FIO" Margin="5"/>
+                </WrapPanel>
+                <Button Content="Задать связь" Command="{Binding AddRelation}" Width="100" HorizontalAlignment="Left" Margin="5"/>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Header="Нарисовать дерево" Grid.Column="1" Grid.Row="0">
+            <WrapPanel>
+                <TextBlock Text="Название" Margin="5"/>
+                <ComboBox Width="150" ItemsSource="{Binding FamilyTrees}" SelectedItem="{Binding Paint.Tree}" DisplayMemberPath="Title" Margin="5"/>
+                <Button Content="Нарисовать" Command="{Binding PaintTree}" Margin="5"/>
+                <Button Content="Записать в TXT" Command="{Binding PaintTreeTxt}" Margin="5"/>
+            </WrapPanel>
+        </GroupBox>
+        <GroupBox Header="Дополнительно" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+            <StackPanel>
+                <WrapPanel>
+                    <TextBlock Text="Найти родственников у" Margin="5"/>
+                    <ComboBox Width="150" ItemsSource="{Binding Humans}" Margin="5" DisplayMemberPath="FIO" SelectedItem="{Binding Relation.HumanForRelation}"/>
+                    <Button Content="Найти" Command="{Binding FindRelation}" Margin="5"/>
+                </WrapPanel>
+                <WrapPanel>
+                    <TextBlock Text="Вычислить возраст предка при рождении ребенка" Margin="5"/>
+                    <ComboBox Width="150" ItemsSource="{Binding Humans}" Margin="5" DisplayMemberPath="FIO" SelectedItem="{Binding Relation.HumanForGetAge}"/>
+                    <Button Content="Вычислить" Command="{Binding GetAge}" Margin="5"/>
+                </WrapPanel>
+                <WrapPanel>
+                    <TextBlock Text="Найти общих родителей у" Margin="5"/>
+                    <ComboBox Width="150" ItemsSource="{Binding Humans}" Margin="5" DisplayMemberPath="FIO" SelectedItem="{Binding Relation.Common.C1}"/>
+                    <TextBlock Text=" и " Margin="5"/>
+                    <ComboBox Width="150" ItemsSource="{Binding Humans}" Margin="5" DisplayMemberPath="FIO" SelectedItem="{Binding Relation.Common.C2}"/>
+                    <Button Content="Найти" Command="{Binding GetCommon}" Margin="5"/>
+                </WrapPanel>
+            </StackPanel>
+        </GroupBox>
+    </Grid>
+</Window>
